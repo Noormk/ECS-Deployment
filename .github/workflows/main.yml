@@ -1,33 +1,33 @@
 name: CI/CD Pipeline
 
 on:
-    push:
-      branches:
-        - master
-  
+  push:
+    branches:
+      - master
+
 jobs:
-    deploy:
-      runs-on: ubuntu-latest
-  
-      steps:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-  
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-  
+
       - name: Build and Push Docker Image
         run: |
           echo ${{ secrets.AWS_ACCESS_KEY_ID }} > aws_access_key_id
           echo ${{ secrets.AWS_SECRET_ACCESS_KEY }} > aws_secret_access_key
-          echo ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/your-repo:latest
-          docker build -t your-image-name .
-          docker tag your-image-name:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/your-repo:latest
-          docker login -u ${{ secrets.AWS_ACCOUNT_ID }} -p $(cat aws_secret_access_key) ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/your-repo:latest
-  
+          ECR_REPO="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/my-app"
+          docker build -t app:1.0 .
+          docker tag app:1.0 $ECR_REPO:1.0
+          docker login -u ${{ secrets.AWS_ACCOUNT_ID }} -p "$(cat aws_secret_access_key)" $ECR_REPO
+          docker push $ECR_REPO:1.0
+
       - name: Deploy to ECS
         run: |
           terraform init

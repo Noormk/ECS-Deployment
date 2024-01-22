@@ -1,7 +1,7 @@
 provider "aws" {
-    region     = "us-west-2"
-    access_key = "AKIA5LPECNT7BR67R54K"
-    secret_key = "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"
+    region     = secrets.AWS_REGION
+    access_key =  secrets.AWS_ACCESS_KEY_ID
+    secret_key = secrets.AWS_SECRET_ACCESS_KEY
 }
 
 resource "aws_ecs_cluster" "my_cluster" {
