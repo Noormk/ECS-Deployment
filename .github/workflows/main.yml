@@ -25,6 +25,10 @@ jobs:
           echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
           echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
 
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
       - name: Build and Push Docker Image
         run: |
           ECR_url="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
@@ -33,10 +37,6 @@ jobs:
           docker tag my-app:1.1 $ECR_url:1.1
           docker push $ECR_url:1.1
 
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
       - name: Deploy to ECS
         run: |
           terraform init
@@ -44,6 +44,3 @@ jobs:
         env:
           TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-
-          
