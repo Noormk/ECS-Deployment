@@ -1,7 +1,15 @@
+variable "aws_access_key" {
+  description = "AWS access key"
+}
+
+variable "aws_secret_key" {
+  description = "AWS secret key"
+}
+
 provider "aws" {
-    region     = secrets.AWS_REGION
-    access_key =  secrets.AWS_ACCESS_KEY_ID
-    secret_key = secrets.AWS_SECRET_ACCESS_KEY
+  region     = "us-west-2"
+  access_key = var.aws_access_key
+  secret_key = var.aws_secret_key
 }
 
 resource "aws_ecs_cluster" "my_cluster" {
