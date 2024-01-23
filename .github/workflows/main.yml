@@ -52,8 +52,6 @@ jobs:
       - name: Deploy to ECS
         run: |
           if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
-            terraform init
-            terraform apply -auto-approve -var-file=variables.tfvars
+          terraform init
+          terraform apply -auto-approve
           fi
-
-
