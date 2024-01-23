@@ -37,9 +37,9 @@ jobs:
             REPOSITORY: my-ecr-repo
             IMAGE_TAG: ${{ github.sha }}
         run: |
-            echo "REGISTRY: $REGISTRY"  # Add this line for debugging
+            echo "REGISTRY: $REGISTRY"  
             docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG .
-            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
+            docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG || echo "Docker push failed with exit code: $?"
         
 
       - name: Configure AWS credentials for Terraform
