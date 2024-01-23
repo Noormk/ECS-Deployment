@@ -5,6 +5,6 @@ ENV MONGO_DB_USERNAME=admin \
 
 RUN mkdir -p /d/ECS-project
 
-COPY . d/ECS-project
+COPY . /d/ECS-project  
 
 CMD ["node", "/d/ECS-project/index.js"]
