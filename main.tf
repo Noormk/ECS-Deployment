@@ -1,9 +1,11 @@
 variable "aws_access_key" {
   description = "AWS access key"
+  default     = "AKIA5LPECNT7BR67R54K"
 }
 
 variable "aws_secret_key" {
   description = "AWS secret key"
+  default     = "Cr8bcR7hvoOGGBoa6+BcPuBVaHndwcYTU4cSviuL"
 }
 
 provider "aws" {
