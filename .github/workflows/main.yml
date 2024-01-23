@@ -28,6 +28,8 @@ jobs:
         uses: aws-actions/amazon-ecr-login@v1
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
     
       - name: Build and Push Docker Image
         run: |
@@ -38,13 +40,13 @@ jobs:
           echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login -u ${{ secrets.AWS_ACCOUNT_ID }} --password-stdin $ECR_url
           docker push $ECR_url:1.1
     
-          - name: Deploy to ECS
-          run: |
+      - name: Deploy to ECS
+        run: |
             if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
               terraform init
               terraform apply -auto-approve
             fi
-          env:
+        env:
             AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
             AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
             AWS_REGION: ${{ secrets.AWS_REGION }}
