@@ -37,7 +37,7 @@ jobs:
           echo "ECR_url: $ECR_url"
           docker build -t my-app:1.1 .
           docker tag my-app:1.1 $ECR_url:1.1
-          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login -u ${{ secrets.AWS_ACCOUNT_ID }} --password-stdin $ECR_url
+          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login -u ${{ secrets.AWS_ACCESS_KEY_ID }} --password-stdin $ECR_url
           docker push $ECR_url:1.1
     
       - name: Configure AWS credentials
