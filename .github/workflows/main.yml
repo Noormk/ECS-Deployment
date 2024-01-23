@@ -12,39 +12,39 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v2
-
+    
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'
-
-      - name: Debug AWS Credentials
+    
+      - name: Debug GitHub Context
         run: |
-          echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
-          echo "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-          echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
-          echo "AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}"
-
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Ref: $GITHUB_REF"
+    
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
         env:
           AWS_REGION: ${{ secrets.AWS_REGION }}
-
+    
       - name: Build and Push Docker Image
         run: |
           ECR_url="${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com"
           echo "ECR_url: $ECR_url"
           docker build -t my-app:1.1 .
           docker tag my-app:1.1 $ECR_url:1.1
+          echo "${{ secrets.AWS_SECRET_ACCESS_KEY }}" | docker login -u ${{ secrets.AWS_ACCOUNT_ID }} --password-stdin $ECR_url
           docker push $ECR_url:1.1
-
-      - name: Deploy to ECS
-        run: |
-          terraform init
-          terraform apply -auto-approve
-        env:
-          TF_VAR_aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          TF_VAR_aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-          
+    
+          - name: Deploy to ECS
+          run: |
+            if [ "${{ github.event_name }}" == "push" ] && [ "${{ github.ref }}" == "refs/heads/master" ]; then
+              terraform init
+              terraform apply -auto-approve
+            fi
+          env:
+            AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            AWS_REGION: ${{ secrets.AWS_REGION }}
