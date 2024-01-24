@@ -34,7 +34,7 @@ The goal of the ECS Deployment project is to use AWS Elastic Container Service (
 ![Alt text](image.png)
 3. Configure Terraform
  
-# **Usage ** - screenshots
+# **Usage** 
 1. Running the Project Locally 
    - Clone the repository
    - Navigate to the project directory
@@ -45,7 +45,7 @@ The goal of the ECS Deployment project is to use AWS Elastic Container Service (
 3. Interacting with the application
 ![Alt text](image-1.png)
 
-# **Issue - GitHub Actions Configuration Errors **
+# **Issue - GitHub Actions Configuration Errors**
 1. GitHub Actions Documentation: Review the GitHub Actions documentation to understand workflow syntax and best practices.
 2. Online Resources: Utilize online resources, and YouTube tutorials, to find solutions to common GitHub Actions issues.
 
@@ -91,4 +91,5 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 - DevOps
 - GitHub Copilot
 
-Thank you for taking the time to explore my project and read through this README. I appreciate your interest and hope you find it helpful!
+**Thank you for taking the time to explore my project and read through this README. I appreciate your interest and hope you find it helpful!**
+
