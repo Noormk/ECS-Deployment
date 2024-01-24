@@ -15,24 +15,25 @@ provider "aws" {
 }
 
 resource "aws_ecs_cluster" "my_cluster" {
-    name = "my-cluster"
+  name = "my-cluster"
 }
 
 resource "aws_ecs_task_definition" "my_task_definition" {
-    family                   = "my-task"
-    container_definitions    = <<EOF
+  family                   = "my-task"
+  container_definitions    = <<EOF
 [
-    {
-        "name": "my-container",
-        "image": "nginx:latest",
-        "portMappings": [
-            {
-                "containerPort": 80,
-                "hostPort": 80,
-                "protocol": "tcp"
-            }
-        ]
-    }
+  {
+    "name": "my-container",
+    "image": "nginx:latest",
+    "portMappings": [
+      {
+        "containerPort": 80,
+        "hostPort": 80,
+        "protocol": "tcp"
+      }
+    ],
+    "memory": 512
+  }
 ]
 EOF
 }
